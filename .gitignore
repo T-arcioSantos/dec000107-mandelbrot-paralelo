@@ -1,55 +1,45 @@
-# Prerequisites
-*.d
-
-# Object files
+# Compilação: executáveis e arquivos intermediários
+/projeto-*/compilacao/
 *.o
-*.ko
 *.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
 *.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+a.out
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+# Saídas geradas pelo Mandelbrot
+# Ignorar somente dentro das pastas de saídas.
+/projeto-*/saidas/**/*.bin
+/projeto-*/saidas/**/*.pgm
+/projeto-*/saidas/**/*.ppm
+/projeto-*/saidas/**/*.png
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Python: ambiente virtual e cache dos programas auxiliares
+.venv/
+__pycache__/
+*.py[cod]
 
-# debug information files
-*.dwo
+# LaTeX: arquivos auxiliares gerados na compilação
+*.aux
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+
+# Logs e intermediários do LaTeX, sem esconder logs experimentais
+/projeto-*/relatorio/**/*.log
+/projeto-*/relatorio/**/*.out
+/projeto-*/apresentacao/**/*.log
+/projeto-*/apresentacao/**/*.out
+
+# Arquivos temporários de editores e do sistema operacional
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
