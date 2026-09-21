@@ -60,3 +60,7 @@ $(SERIAL_TARGET): $(SERIAL_SOURCES) codigo/comum/mandelbrot.h | $(BUILD_DIR)
 clean-serial:
 	rm -f $(SERIAL_TARGET)
 
+SERIAL_SOURCES += codigo/comum/mandelbrot_io.c
+
+
+$(SERIAL_TARGET): codigo/comum/mandelbrot_io.c codigo/comum/mandelbrot_io.h

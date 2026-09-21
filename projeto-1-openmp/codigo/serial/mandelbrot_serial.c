@@ -1,4 +1,5 @@
 #include "mandelbrot.h"
+#include "mandelbrot_io.h"
 
 #include <inttypes.h>
 #include <stdint.h>
@@ -148,6 +149,8 @@ int main(int argc, char **argv){
         .max_iter = 1000,
     };
 
+    const char *arquivo_binario = "saidas/matrizes/mandelbrot_serial.bin";
+
     const int resultado_argumentos = analisar_argumentos(argc, argv, &config);
     if(resultado_argumentos == 0){
         return EXIT_SUCCESS;
@@ -177,6 +180,11 @@ int main(int argc, char **argv){
 
     mandelbrot_gerar_serial(&config, matriz);
 
+    if(!mandelbrot_salvar_binario(arquivo_binario, &config, matriz)){
+        free(matriz);
+        return EXIT_FAILURE;
+    }
+
     printf( 
         "Matriz %zux%zu gerada com MAX_ITER=%" PRId32 ".\n"
         "Regiao: Re=[%.1f, %.1f], Im=[%.1f, %.1f].\n"
@@ -193,6 +201,8 @@ int main(int argc, char **argv){
         matriz[total / 2],
         matriz[total - 1]
     );
+
+    printf("Matriz binaria salva em %s.\n", arquivo_binario);
 
     free(matriz);
     return EXIT_SUCCESS;
