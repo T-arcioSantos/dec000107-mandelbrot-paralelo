@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <math.h>
 #include <string.h>
+#include <omp.h>
 
 static void exibir_uso(const char *programa, FILE *saida){
     fprintf(saida, 
@@ -180,8 +181,11 @@ int main(int argc, char **argv){
         return EXIT_FAILURE;
     }
 
+    const double inicio_geracao = omp_get_wtime();
     mandelbrot_gerar_serial(&config, matriz);
+    const double tempo_geracao = omp_get_wtime() - inicio_geracao;
 
+    const double inicio_escrita = omp_get_wtime();
     if(!mandelbrot_salvar_binario(arquivo_binario, &config, matriz)){
         free(matriz);
         return EXIT_FAILURE;
@@ -191,6 +195,8 @@ int main(int argc, char **argv){
         free(matriz);
         return EXIT_FAILURE;
     }
+
+    const double tempo_escrita = omp_get_wtime() - inicio_escrita;
 
     printf( 
         "Matriz %zux%zu gerada com MAX_ITER=%" PRId32 ".\n"
@@ -208,6 +214,9 @@ int main(int argc, char **argv){
         matriz[total / 2],
         matriz[total - 1]
     );
+
+    printf("Tempo de geracao: %.6f segundos. \n", tempo_geracao);
+    printf("Tempo de escrita: %.6f segundos. \n", tempo_escrita);
 
     printf("Matriz binaria salva em %s.\n", arquivo_binario);
 

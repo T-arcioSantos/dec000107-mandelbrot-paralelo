@@ -64,3 +64,8 @@ SERIAL_SOURCES += codigo/comum/mandelbrot_io.c
 
 
 $(SERIAL_TARGET): codigo/comum/mandelbrot_io.c codigo/comum/mandelbrot_io.h
+
+OPENMP_FLAGS := -fopenmp
+
+$(SERIAL_TARGET): CFLAGS += $(OPENMP_FLAGS)
+$(SERIAL_TARGET): LDLIBS += $(OPENMP_FLAGS)
