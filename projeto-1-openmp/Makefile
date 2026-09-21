@@ -41,3 +41,22 @@ $(MATRIX_TEST_TARGET): $(MATRIX_TEST_SOURCES) codigo/comum/mandelbrot.h | $(BUIL
 
 clean-matriz:
 	rm -f $(MATRIX_TEST_TARGET)
+
+SERIAL_TARGET := $(BUILD_DIR)/mandelbrot_serial
+SERIAL_SOURCES := codigo/comum/mandelbrot.c \
+	codigo/serial/mandelbrot_serial.c
+
+
+.PHONY: serial clean-serial
+
+
+serial: $(SERIAL_TARGET)
+
+
+$(SERIAL_TARGET): $(SERIAL_SOURCES) codigo/comum/mandelbrot.h | $(BUILD_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(SERIAL_SOURCES) -o $@ $(LDLIBS)
+
+
+clean-serial:
+	rm -f $(SERIAL_TARGET)
+
