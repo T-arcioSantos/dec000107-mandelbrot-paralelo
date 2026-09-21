@@ -22,3 +22,22 @@ $(BUILD_DIR):
 
 clean:
 	rm -f $(TEST_TARGET)
+
+MATRIX_TEST_TARGET := $(BUILD_DIR)/test_matriz_serial
+MATRIX_TEST_SOURCES := codigo/comum/mandelbrot.c \
+	validacao/casos/test_matriz_serial.c
+
+
+.PHONY: test-matriz clean-matriz
+
+
+test-matriz: $(MATRIX_TEST_TARGET)
+	./$(MATRIX_TEST_TARGET)
+
+
+$(MATRIX_TEST_TARGET): $(MATRIX_TEST_SOURCES) codigo/comum/mandelbrot.h | $(BUILD_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(MATRIX_TEST_SOURCES) -o $@ $(LDLIBS)
+
+
+clean-matriz:
+	rm -f $(MATRIX_TEST_TARGET)
