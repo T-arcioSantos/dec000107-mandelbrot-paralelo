@@ -151,6 +151,8 @@ int main(int argc, char **argv){
 
     const char *arquivo_binario = "saidas/matrizes/mandelbrot_serial.bin";
 
+    const char *arquivo_pgm = "saidas/imagens/mandelbrot_serial.pgm";
+
     const int resultado_argumentos = analisar_argumentos(argc, argv, &config);
     if(resultado_argumentos == 0){
         return EXIT_SUCCESS;
@@ -185,6 +187,11 @@ int main(int argc, char **argv){
         return EXIT_FAILURE;
     }
 
+    if(!mandelbrot_salvar_pgm(arquivo_pgm,&config, matriz)){
+        free(matriz);
+        return EXIT_FAILURE;
+    }
+
     printf( 
         "Matriz %zux%zu gerada com MAX_ITER=%" PRId32 ".\n"
         "Regiao: Re=[%.1f, %.1f], Im=[%.1f, %.1f].\n"
@@ -203,6 +210,8 @@ int main(int argc, char **argv){
     );
 
     printf("Matriz binaria salva em %s.\n", arquivo_binario);
+
+    printf("Imagem PGM salva em %s.\n", arquivo_pgm);
 
     free(matriz);
     return EXIT_SUCCESS;

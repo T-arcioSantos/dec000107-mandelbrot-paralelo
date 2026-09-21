@@ -7,4 +7,5 @@
 
 int mandelbrot_salvar_binario(const char *caminho, const MandelbrotConfig *config, const int32_t *matriz);
 
+int mandelbrot_salvar_pgm(const char *caminho, const MandelbrotConfig *config, const int32_t *matriz);
 #endif // MANDELBROT_IO_H
