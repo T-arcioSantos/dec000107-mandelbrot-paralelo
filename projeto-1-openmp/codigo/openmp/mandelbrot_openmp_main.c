@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <inttypes.h>
 #include <limits.h>
+#include <math.h>
 #include <omp.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -15,14 +16,21 @@ static void exibir_uso(const char *programa, FILE *saida)
 
     fprintf(
         saida,
-        "Uso: %s [--threads N] [--schedule POLITICA] [--chunk N]\n"
+        "Uso: %s [opcoes]\n"
         "\n"
-        "Executa o caso oficial 4096x4096, MAX_ITER=1000.\n"
+        "Sem opcoes, executa o caso oficial 4096x4096, MAX_ITER=1000.\n"
         "\n"
         "Opcoes:\n"
-        "  --threads N       quantidade de threads\n"
+         "  --threads N       quantidade de threads\n"
         "  --schedule P      static, dynamic ou guided\n"
         "  --chunk N         quantidade de linhas por bloco\n"
+        "  --largura N       numero de colunas\n"
+        "  --altura N        numero de linhas\n"
+        "  --max-iter N      limite de iteracoes\n"
+        "  --re-min X        limite real inferior\n"
+        "  --re-max X        limite real superior\n"
+        "  --im-min X        limite imaginario inferior\n"
+        "  --im-max X        limite imaginario superior\n"
         "  --ajuda           mostra esta mensagem\n",
         programa
     );
@@ -42,6 +50,64 @@ static int ler_inteiro_positivo(const char *texto, int *valor)
     *valor = (int) lido;
     return 1;
 }
+
+static int ler_size_t_positivo(const char *texto, size_t *valor)
+{
+   char *fim = NULL;
+   errno = 0;
+
+
+   if (texto[0] == '-') {
+       return 0;
+   }
+
+
+   const uintmax_t lido = strtoumax(texto, &fim, 10);
+   if (errno != 0 || fim == texto || *fim != '\0'
+       || lido == 0 || lido > SIZE_MAX) {
+       return 0;
+   }
+
+
+   *valor = (size_t) lido;
+   return 1;
+}
+
+
+static int ler_int32_positivo(const char *texto, int32_t *valor)
+{
+   char *fim = NULL;
+   errno = 0;
+   const intmax_t lido = strtoimax(texto, &fim, 10);
+
+
+   if (errno != 0 || fim == texto || *fim != '\0'
+       || lido <= 0 || lido > INT32_MAX) {
+       return 0;
+   }
+
+
+   *valor = (int32_t) lido;
+   return 1;
+}
+
+
+static int ler_double_finito(const char *texto, double *valor)
+{
+   char *fim = NULL;
+   errno = 0;
+   const double lido = strtod(texto, &fim);
+
+
+   if (errno != 0 || fim == texto || *fim != '\0' || !isfinite(lido)) {
+       return 0;
+   }
+
+
+   *valor = lido;
+   return 1;
+}
+
 
 static int ler_escalonamento(
     const char *texto,
@@ -109,6 +175,7 @@ static const char *caminho_pgm(
 static int analisar_argumentos(
     int argc,
     char **argv,
+    MandelbrotConfig *config,
     int *numero_threads,
     MandelbrotEscalonamento *escalonamento,
     int *tamanho_chunk
@@ -123,7 +190,14 @@ static int analisar_argumentos(
         const char *opcao = argv[indice];
         const int conhecida = strcmp(opcao, "--threads") == 0
             || strcmp(opcao, "--schedule") == 0
-            || strcmp(opcao, "--chunk") == 0;
+            || strcmp(opcao, "--chunk") == 0
+            || strcmp(opcao, "--largura") == 0
+            || strcmp(opcao, "--altura") == 0
+            || strcmp(opcao, "--max-iter") == 0
+            || strcmp(opcao, "--re-min") == 0
+            || strcmp(opcao, "--re-max") == 0
+            || strcmp(opcao, "--im-min") == 0
+            || strcmp(opcao, "--im-max") == 0;
 
         if (!conhecida) {
             fprintf(stderr, "Erro: opcao desconhecida: %s.\n", argv[indice]);
@@ -141,8 +215,22 @@ static int analisar_argumentos(
             valido = ler_inteiro_positivo(argv[indice], numero_threads);
         } else if (strcmp(opcao, "--schedule") == 0) {
             valido = ler_escalonamento(argv[indice], escalonamento);
-        } else {
+        } else if (strcmp(opcao, "--chunk") == 0) {
             valido = ler_inteiro_positivo(argv[indice], tamanho_chunk);
+        } else if (strcmp(opcao, "--largura") == 0) {
+            valido = ler_size_t_positivo(argv[indice], &config->largura);
+        } else if (strcmp(opcao, "--altura") == 0) {
+            valido = ler_size_t_positivo(argv[indice], &config->altura);
+        } else if (strcmp(opcao, "--max-iter") == 0) {
+            valido = ler_int32_positivo(argv[indice], &config->max_iter);
+        } else if (strcmp(opcao, "--re-min") == 0) {
+            valido = ler_double_finito(argv[indice], &config->re_min);
+        } else if (strcmp(opcao, "--re-max") == 0) {
+            valido = ler_double_finito(argv[indice], &config->re_max);
+        } else if (strcmp(opcao, "--im-min") == 0) {
+            valido = ler_double_finito(argv[indice], &config->im_min);
+        } else {
+            valido = ler_double_finito(argv[indice], &config->im_max);
         }
 
         if (!valido) {
@@ -156,12 +244,19 @@ static int analisar_argumentos(
         }
     }
 
+    if (config->re_min > config->re_max
+        || config->im_min > config->im_max) {
+        fputs("Erro: o limite inferior nao pode superar o superior.\n", stderr);
+        return -1;
+    }
+
+
     return 1;
 }
 
 int main(int argc, char **argv)
 {
-    const MandelbrotConfig config = {
+    MandelbrotConfig config = {
         .re_min = -2.0,
         .re_max = 1.0,
         .im_min = -1.5,
@@ -177,6 +272,7 @@ int main(int argc, char **argv)
     const int resultado_argumentos = analisar_argumentos(
         argc,
         argv,
+        &config,
         &numero_threads,
         &escalonamento,
         &tamanho_chunk
@@ -189,10 +285,21 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
+    if (config.largura > SIZE_MAX / config.altura) {
+        fputs("Erro: as dimensoes da matriz sao grandes demais.\n", stderr);
+        return EXIT_FAILURE;
+    }
+
+
     const char *arquivo_binario = caminho_binario(escalonamento);
     const char *arquivo_pgm = caminho_pgm(escalonamento);
 
     const size_t total = config.largura * config.altura;
+    if (total > SIZE_MAX / sizeof(int32_t)) {
+       fputs("Erro: a matriz nao cabe na memoria enderecavel.\n", stderr);
+       return EXIT_FAILURE;
+   }
+
     int32_t *matriz = malloc(total * sizeof(*matriz));
     if (matriz == NULL) {
         fputs("Erro: nao foi possivel alocar a matriz.\n", stderr);
@@ -224,6 +331,7 @@ int main(int argc, char **argv)
 
     printf(
         "Matriz OpenMP %zux%zu gerada com MAX_ITER=%" PRId32 ".\n"
+        "Regiao: Re=[%.9f, %.9f], Im=[%.9f, %.9f].\n"
         "Escalonamento: %s.\n"
         "Threads: %d.\n"
         "Tempo de geracao: %.6f segundos.\n"
@@ -233,6 +341,10 @@ int main(int argc, char **argv)
         config.largura,
         config.altura,
         config.max_iter,
+        config.re_min,
+        config.re_max,
+        config.im_min,
+        config.im_max,
         nome_escalonamento(escalonamento),
         numero_threads,
         tempo_geracao,
@@ -248,7 +360,7 @@ int main(int argc, char **argv)
             "Chunk: %d %s.\n",
             tamanho_chunk,
             tamanho_chunk == 1 ? "linha" : "linhas"
-);
+        );
     }
     printf("Matriz binaria salva em %s.\n", arquivo_binario);
     printf("Imagem PGM salva em %s.\n", arquivo_pgm);
