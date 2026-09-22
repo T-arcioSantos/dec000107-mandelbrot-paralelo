@@ -25,13 +25,33 @@ static int comparar_com_serial(
     }
 
     mandelbrot_gerar_serial(config, serial);
-    mandelbrot_gerar_openmp(
-        config,
-        openmp,
-        numero_threads,
-        escalonamento,
-        tamanho_chunk
-    );
+    MandelbrotBalanceamento balanceamento;
+
+    if (!mandelbrot_gerar_openmp_com_balanceamento(
+           config,
+           openmp,
+           numero_threads,
+           escalonamento,
+           tamanho_chunk,
+           &balanceamento
+       )) {
+       fputs("ERRO: falha ao medir balanceamento.\n", stderr);
+       free(serial);
+       free(openmp);
+       return 0;
+   }
+
+
+   if (balanceamento.numero_threads < 1
+       || balanceamento.numero_threads > numero_threads
+       || balanceamento.tempo_minimo > balanceamento.tempo_medio
+       || balanceamento.tempo_medio > balanceamento.tempo_maximo
+       || balanceamento.fator_maximo_medio < 0.0) {
+       fputs("FALHOU: metricas de balanceamento invalidas.\n", stderr);
+       free(serial);
+       free(openmp);
+       return 0;
+   }
 
     int iguais = 1;
     for (size_t indice = 0; indice < total; ++indice) {

@@ -308,14 +308,23 @@ int main(int argc, char **argv)
 
     omp_set_dynamic(0);
 
+    MandelbrotBalanceamento balanceamento;
+
     const double inicio_geracao = omp_get_wtime();
-    mandelbrot_gerar_openmp(
-        &config,
-        matriz,
-        numero_threads,
-        escalonamento,
-        tamanho_chunk
-    );
+    if (!mandelbrot_gerar_openmp_com_balanceamento(
+           &config,
+           matriz,
+           numero_threads,
+           escalonamento,
+           tamanho_chunk,
+           &balanceamento
+       )) {
+       fputs("Erro: nao foi possivel medir o balanceamento.\n", stderr);
+       free(matriz);
+       return EXIT_FAILURE;
+   }
+
+
     const double tempo_geracao = omp_get_wtime() - inicio_geracao;
 
     const double inicio_escrita = omp_get_wtime();
@@ -362,6 +371,18 @@ int main(int argc, char **argv)
             tamanho_chunk == 1 ? "linha" : "linhas"
         );
     }
+
+    printf(
+       "Balanceamento: threads=%d, minimo=%.6f s, medio=%.6f s, "
+       "maximo=%.6f s, fator_maximo_medio=%.6f.\n",
+       balanceamento.numero_threads,
+       balanceamento.tempo_minimo,
+       balanceamento.tempo_medio,
+       balanceamento.tempo_maximo,
+       balanceamento.fator_maximo_medio
+   );
+
+
     printf("Matriz binaria salva em %s.\n", arquivo_binario);
     printf("Imagem PGM salva em %s.\n", arquivo_pgm);
 
