@@ -92,3 +92,26 @@ $(OPENMP_TEST_TARGET): $(OPENMP_TEST_SOURCES) \
 clean-openmp:
 	rm -f $(OPENMP_TEST_TARGET)
 
+
+OPENMP_TARGET := $(BUILD_DIR)/mandelbrot_openmp
+OPENMP_SOURCES := codigo/comum/mandelbrot.c \
+	codigo/comum/mandelbrot_io.c \
+	codigo/openmp/mandelbrot_openmp.c \
+	codigo/openmp/mandelbrot_openmp_main.c
+
+
+.PHONY: openmp clean-openmp-executavel
+
+
+openmp: $(OPENMP_TARGET)
+
+
+$(OPENMP_TARGET): $(OPENMP_SOURCES) codigo/comum/mandelbrot.h \
+		codigo/comum/mandelbrot_io.h codigo/openmp/mandelbrot_openmp.h \
+		| $(BUILD_DIR)
+	$(CC) $(CPPFLAGS) -Icodigo/openmp $(CFLAGS) $(OPENMP_SOURCES) \
+		-o $@ $(LDLIBS) $(OPENMP_FLAGS)
+
+
+clean-openmp-executavel:
+	rm -f $(OPENMP_TARGET)
