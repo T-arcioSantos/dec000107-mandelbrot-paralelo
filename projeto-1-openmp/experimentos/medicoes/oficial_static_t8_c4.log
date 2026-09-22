@@ -1,0 +1,61 @@
+
+===== repeticao 1 =====
+Matriz OpenMP 4096x4096 gerada com MAX_ITER=1000.
+Regiao: Re=[-2.000000000, 1.000000000], Im=[-1.500000000, 1.500000000].
+Escalonamento: static.
+Threads: 8.
+Tempo de geracao: 2.395000 segundos.
+Tempo de escrita: 0.417000 segundos.
+Amostras: primeiro=0, meio=0, ultimo=1.
+Chunk: 4 linhas.
+Balanceamento: threads=8, minimo=2.376000 s, medio=2.385875 s, maximo=2.394000 s, fator_maximo_medio=1.003405.
+Matriz binaria salva em saidas/matrizes/mandelbrot_openmp_static.bin.
+Imagem PGM salva em saidas/imagens/mandelbrot_openmp_static.pgm.
+===== repeticao 2 =====
+Matriz OpenMP 4096x4096 gerada com MAX_ITER=1000.
+Regiao: Re=[-2.000000000, 1.000000000], Im=[-1.500000000, 1.500000000].
+Escalonamento: static.
+Threads: 8.
+Tempo de geracao: 2.560000 segundos.
+Tempo de escrita: 0.943000 segundos.
+Amostras: primeiro=0, meio=0, ultimo=1.
+Chunk: 4 linhas.
+Balanceamento: threads=8, minimo=2.416000 s, medio=2.476250 s, maximo=2.559000 s, fator_maximo_medio=1.033417.
+Matriz binaria salva em saidas/matrizes/mandelbrot_openmp_static.bin.
+Imagem PGM salva em saidas/imagens/mandelbrot_openmp_static.pgm.
+===== repeticao 3 =====
+Matriz OpenMP 4096x4096 gerada com MAX_ITER=1000.
+Regiao: Re=[-2.000000000, 1.000000000], Im=[-1.500000000, 1.500000000].
+Escalonamento: static.
+Threads: 8.
+Tempo de geracao: 2.304000 segundos.
+Tempo de escrita: 1.149000 segundos.
+Amostras: primeiro=0, meio=0, ultimo=1.
+Chunk: 4 linhas.
+Balanceamento: threads=8, minimo=2.242000 s, medio=2.264375 s, maximo=2.302000 s, fator_maximo_medio=1.016616.
+Matriz binaria salva em saidas/matrizes/mandelbrot_openmp_static.bin.
+Imagem PGM salva em saidas/imagens/mandelbrot_openmp_static.pgm.
+===== repeticao 4 =====
+Matriz OpenMP 4096x4096 gerada com MAX_ITER=1000.
+Regiao: Re=[-2.000000000, 1.000000000], Im=[-1.500000000, 1.500000000].
+Escalonamento: static.
+Threads: 8.
+Tempo de geracao: 2.104000 segundos.
+Tempo de escrita: 1.023000 segundos.
+Amostras: primeiro=0, meio=0, ultimo=1.
+Chunk: 4 linhas.
+Balanceamento: threads=8, minimo=2.093000 s, medio=2.096750 s, maximo=2.103000 s, fator_maximo_medio=1.002981.
+Matriz binaria salva em saidas/matrizes/mandelbrot_openmp_static.bin.
+Imagem PGM salva em saidas/imagens/mandelbrot_openmp_static.pgm.
+===== repeticao 5 =====
+Matriz OpenMP 4096x4096 gerada com MAX_ITER=1000.
+Regiao: Re=[-2.000000000, 1.000000000], Im=[-1.500000000, 1.500000000].
+Escalonamento: static.
+Threads: 8.
+Tempo de geracao: 2.195000 segundos.
+Tempo de escrita: 1.033000 segundos.
+Amostras: primeiro=0, meio=0, ultimo=1.
+Chunk: 4 linhas.
+Balanceamento: threads=8, minimo=2.123000 s, medio=2.156875 s, maximo=2.195000 s, fator_maximo_medio=1.017676.
+Matriz binaria salva em saidas/matrizes/mandelbrot_openmp_static.bin.
+Imagem PGM salva em saidas/imagens/mandelbrot_openmp_static.pgm.
