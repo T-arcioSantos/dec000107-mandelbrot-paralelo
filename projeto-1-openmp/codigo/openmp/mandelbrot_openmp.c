@@ -11,7 +11,8 @@ void mandelbrot_gerar_openmp_static(
         config,
         matriz,
         numero_threads,
-        MANDELBROT_ESCALONAMENTO_STATIC
+        MANDELBROT_ESCALONAMENTO_STATIC,
+        0
     );
 }
 
@@ -34,10 +35,11 @@ void mandelbrot_gerar_openmp(
     const MandelbrotConfig *config,
     int32_t *matriz,
     int numero_threads,
-    MandelbrotEscalonamento escalonamento
+    MandelbrotEscalonamento escalonamento,
+    int tamanho_chunk
 )
 {
-    omp_set_schedule(converter_escalonamento(escalonamento), 0);
+    omp_set_schedule(converter_escalonamento(escalonamento), tamanho_chunk);
 
     #pragma omp parallel for \
         default(none) \

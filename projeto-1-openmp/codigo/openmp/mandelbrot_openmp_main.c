@@ -12,30 +12,34 @@
 
 static void exibir_uso(const char *programa, FILE *saida)
 {
+
     fprintf(
         saida,
-        "Uso: %s [--threads N] [--schedule POLITICA]\n"
+        "Uso: %s [--threads N] [--schedule POLITICA] [--chunk N]\n"
         "\n"
         "Executa o caso oficial 4096x4096, MAX_ITER=1000.\n"
         "\n"
         "Opcoes:\n"
         "  --threads N       quantidade de threads\n"
         "  --schedule P      static, dynamic ou guided\n"
+        "  --chunk N         quantidade de linhas por bloco\n"
         "  --ajuda           mostra esta mensagem\n",
         programa
     );
 }
 
-
-static int ler_threads(const char *texto, int *numero_threads){
+static int ler_inteiro_positivo(const char *texto, int *valor)
+{
     char *fim = NULL;
     errno = 0;
 
     const long lido = strtol(texto, &fim, 10);
-    if(errno != 0 || fim == texto ||*fim != '\0' || lido <= 0 || lido > INT_MAX){
+    if (errno != 0 || fim == texto || *fim != '\0'
+        || lido <= 0 || lido > INT_MAX) {
         return 0;
     }
-    *numero_threads = (int) lido;
+
+    *valor = (int) lido;
     return 1;
 }
 
@@ -102,12 +106,12 @@ static const char *caminho_pgm(
     }
 }
 
-/* Retorna 1 para executar, 0 para --ajuda e -1 quando encontra erro. */
 static int analisar_argumentos(
     int argc,
     char **argv,
     int *numero_threads,
-    MandelbrotEscalonamento *escalonamento
+    MandelbrotEscalonamento *escalonamento,
+    int *tamanho_chunk
 )
 {
     for (int indice = 1; indice < argc; ++indice) {
@@ -118,7 +122,8 @@ static int analisar_argumentos(
 
         const char *opcao = argv[indice];
         const int conhecida = strcmp(opcao, "--threads") == 0
-            || strcmp(opcao, "--schedule") == 0;
+            || strcmp(opcao, "--schedule") == 0
+            || strcmp(opcao, "--chunk") == 0;
 
         if (!conhecida) {
             fprintf(stderr, "Erro: opcao desconhecida: %s.\n", argv[indice]);
@@ -133,9 +138,11 @@ static int analisar_argumentos(
         ++indice;
         int valido = 0;
         if (strcmp(opcao, "--threads") == 0) {
-            valido = ler_threads(argv[indice], numero_threads);
-        } else {
+            valido = ler_inteiro_positivo(argv[indice], numero_threads);
+        } else if (strcmp(opcao, "--schedule") == 0) {
             valido = ler_escalonamento(argv[indice], escalonamento);
+        } else {
+            valido = ler_inteiro_positivo(argv[indice], tamanho_chunk);
         }
 
         if (!valido) {
@@ -166,11 +173,13 @@ int main(int argc, char **argv)
     int numero_threads = omp_get_max_threads();
     MandelbrotEscalonamento escalonamento =
         MANDELBROT_ESCALONAMENTO_STATIC;
+    int tamanho_chunk = 0;
     const int resultado_argumentos = analisar_argumentos(
         argc,
         argv,
         &numero_threads,
-        &escalonamento
+        &escalonamento,
+        &tamanho_chunk
     );
     if (resultado_argumentos == 0) {
         return EXIT_SUCCESS;
@@ -197,7 +206,8 @@ int main(int argc, char **argv)
         &config,
         matriz,
         numero_threads,
-        escalonamento
+        escalonamento,
+        tamanho_chunk
     );
     const double tempo_geracao = omp_get_wtime() - inicio_geracao;
 
@@ -231,6 +241,15 @@ int main(int argc, char **argv)
         matriz[total / 2],
         matriz[total - 1]
     );
+    if (tamanho_chunk == 0) {
+        puts("Chunk: padrao da politica.");
+    } else {
+        printf(
+            "Chunk: %d %s.\n",
+            tamanho_chunk,
+            tamanho_chunk == 1 ? "linha" : "linhas"
+);
+    }
     printf("Matriz binaria salva em %s.\n", arquivo_binario);
     printf("Imagem PGM salva em %s.\n", arquivo_pgm);
 

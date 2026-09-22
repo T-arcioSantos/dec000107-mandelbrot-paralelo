@@ -16,7 +16,8 @@ void mandelbrot_gerar_openmp(
     const MandelbrotConfig *config,
     int32_t *matriz,
     int numero_threads,
-    MandelbrotEscalonamento escalonamento
+    MandelbrotEscalonamento escalonamento,
+    int tamanho_chunk
 );
 
 #endif // MANDELBROT_OPENMP_H
