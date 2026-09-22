@@ -8,7 +8,6 @@ a.out
 # Saídas geradas pelo Mandelbrot
 # Ignorar somente dentro das pastas de saídas.
 /projeto-*/saidas/**/*.bin
-/projeto-*/saidas/**/*.pgm
 /projeto-*/saidas/**/*.ppm
 /projeto-*/saidas/**/*.png
 
