@@ -33,24 +33,32 @@ static double coordenada(double minimo, double maximo, size_t indice, size_t qua
 	return minimo + (double) indice * passo;
 }
 
-void mandelbrot_gerar_serial(const MandelbrotConfig *config, int32_t *matriz){
-	for(size_t py = 0; py < config -> altura; ++py){
-		const double ci = coordenada(
-			config->im_min,
-			config->im_max,
-			py,
-			config->altura
-		);
+void mandelbrot_gerar_linha(const MandelbrotConfig *config, size_t py, int32_t *matriz){
+	const double ci = coordenada(
+		config -> im_min,
+		config-> im_max,
+		py,
+		config->altura
+	);
 
-		for(size_t px = 0; px < config -> largura; ++px){
-			const double cr = coordenada(
-				config->re_min,
-				config->re_max,
-				px,
-				config->largura
-			);
-			const size_t indice = py * config->largura + px;
-			matriz[indice] = mandelbrot_escape_time(cr, ci, config->max_iter);
-		}
+	for(size_t px = 0; px < config->largura; ++px){
+		const double cr = coordenada(
+			config->re_min,
+			config->re_max,
+			px,
+			config->largura
+		);
+		const size_t indice = py * config->largura + px;
+		matriz[indice] = mandelbrot_escape_time(
+			cr,
+			ci,
+			config->max_iter
+		);
+	}
+}
+
+void mandelbrot_gerar_serial(const MandelbrotConfig *config, int32_t *matriz){
+	for(size_t py = 0; py < config->altura; ++py){
+		mandelbrot_gerar_linha(config, py, matriz);
 	}
 }

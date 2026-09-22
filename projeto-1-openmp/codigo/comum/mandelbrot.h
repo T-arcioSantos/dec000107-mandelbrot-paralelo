@@ -18,4 +18,6 @@ int32_t mandelbrot_escape_time(double cr, double ci, int32_t max_iter);
 
 void mandelbrot_gerar_serial(const MandelbrotConfig *config, int32_t *matriz);
 
+void mandelbrot_gerar_linha(const MandelbrotConfig *config, size_t py, int32_t *matriz);
+
 #endif // MANDELBROT_H

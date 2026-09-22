@@ -69,3 +69,26 @@ OPENMP_FLAGS := -fopenmp
 
 $(SERIAL_TARGET): CFLAGS += $(OPENMP_FLAGS)
 $(SERIAL_TARGET): LDLIBS += $(OPENMP_FLAGS)
+
+OPENMP_TEST_TARGET := $(BUILD_DIR)/test_matriz_openmp
+OPENMP_TEST_SOURCES := codigo/comum/mandelbrot.c \
+	codigo/openmp/mandelbrot_openmp.c \
+	validacao/casos/test_matriz_openmp.c
+
+
+.PHONY: test-openmp clean-openmp
+
+
+test-openmp: $(OPENMP_TEST_TARGET)
+	./$(OPENMP_TEST_TARGET)
+
+
+$(OPENMP_TEST_TARGET): $(OPENMP_TEST_SOURCES) \
+		codigo/comum/mandelbrot.h codigo/openmp/mandelbrot_openmp.h | $(BUILD_DIR)
+	$(CC) $(CPPFLAGS) -Icodigo/openmp $(CFLAGS) $(OPENMP_TEST_SOURCES) \
+		-o $@ $(LDLIBS) $(OPENMP_FLAGS)
+
+
+clean-openmp:
+	rm -f $(OPENMP_TEST_TARGET)
+
