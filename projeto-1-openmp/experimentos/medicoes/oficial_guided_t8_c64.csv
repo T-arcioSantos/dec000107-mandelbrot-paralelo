@@ -1,0 +1,6 @@
+﻿"nome";"versao";"repeticao";"argumentos";"tempo_geracao_s";"tempo_escrita_s";"threads_usadas";"tempo_minimo_thread_s";"tempo_medio_thread_s";"tempo_maximo_thread_s";"fator_maximo_medio"
+"oficial_guided_t8_c64";"openmp";"1";"--threads 8 --schedule guided --chunk 64";"3.528000";"0.375000";"8";"0.885000";"2.189250";"3.527000";"1.611054"
+"oficial_guided_t8_c64";"openmp";"2";"--threads 8 --schedule guided --chunk 64";"3.568000";"0.390000";"8";"0.902000";"2.220000";"3.567000";"1.606757"
+"oficial_guided_t8_c64";"openmp";"3";"--threads 8 --schedule guided --chunk 64";"3.522000";"0.398000";"8";"0.905000";"2.206875";"3.521000";"1.595469"
+"oficial_guided_t8_c64";"openmp";"4";"--threads 8 --schedule guided --chunk 64";"3.475000";"0.388000";"8";"0.888000";"2.165250";"3.474000";"1.604434"
+"oficial_guided_t8_c64";"openmp";"5";"--threads 8 --schedule guided --chunk 64";"3.619000";"0.393000";"8";"0.896000";"2.249375";"3.618000";"1.608447"

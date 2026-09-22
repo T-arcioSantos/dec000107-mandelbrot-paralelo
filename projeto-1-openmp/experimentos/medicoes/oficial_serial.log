@@ -1,0 +1,41 @@
+
+===== repeticao 1 =====
+Matriz 4096x4096 gerada com MAX_ITER=1000.
+Regiao: Re=[-2.0, 1.0], Im=[-1.5, 1.5].
+Amostras: primeiro=0, meio=0, ultimo=1.
+Tempo de geracao: 11.625000 segundos. 
+Tempo de escrita: 0.962000 segundos. 
+Matriz binaria salva em saidas/matrizes/mandelbrot_serial.bin.
+Imagem PGM salva em saidas/imagens/mandelbrot_serial.pgm.
+===== repeticao 2 =====
+Matriz 4096x4096 gerada com MAX_ITER=1000.
+Regiao: Re=[-2.0, 1.0], Im=[-1.5, 1.5].
+Amostras: primeiro=0, meio=0, ultimo=1.
+Tempo de geracao: 11.753000 segundos. 
+Tempo de escrita: 0.977000 segundos. 
+Matriz binaria salva em saidas/matrizes/mandelbrot_serial.bin.
+Imagem PGM salva em saidas/imagens/mandelbrot_serial.pgm.
+===== repeticao 3 =====
+Matriz 4096x4096 gerada com MAX_ITER=1000.
+Regiao: Re=[-2.0, 1.0], Im=[-1.5, 1.5].
+Amostras: primeiro=0, meio=0, ultimo=1.
+Tempo de geracao: 11.970000 segundos. 
+Tempo de escrita: 1.472000 segundos. 
+Matriz binaria salva em saidas/matrizes/mandelbrot_serial.bin.
+Imagem PGM salva em saidas/imagens/mandelbrot_serial.pgm.
+===== repeticao 4 =====
+Matriz 4096x4096 gerada com MAX_ITER=1000.
+Regiao: Re=[-2.0, 1.0], Im=[-1.5, 1.5].
+Amostras: primeiro=0, meio=0, ultimo=1.
+Tempo de geracao: 11.849000 segundos. 
+Tempo de escrita: 1.333000 segundos. 
+Matriz binaria salva em saidas/matrizes/mandelbrot_serial.bin.
+Imagem PGM salva em saidas/imagens/mandelbrot_serial.pgm.
+===== repeticao 5 =====
+Matriz 4096x4096 gerada com MAX_ITER=1000.
+Regiao: Re=[-2.0, 1.0], Im=[-1.5, 1.5].
+Amostras: primeiro=0, meio=0, ultimo=1.
+Tempo de geracao: 11.875000 segundos. 
+Tempo de escrita: 1.386000 segundos. 
+Matriz binaria salva em saidas/matrizes/mandelbrot_serial.bin.
+Imagem PGM salva em saidas/imagens/mandelbrot_serial.pgm.
