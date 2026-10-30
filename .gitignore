@@ -6,11 +6,15 @@
 a.out
 
 # Saídas geradas pelo Mandelbrot
-# Ignorar somente dentro das pastas de saídas.
 /projeto-*/saidas/**/*.bin
 /projeto-*/saidas/**/*.pgm
 /projeto-*/saidas/**/*.ppm
 /projeto-*/saidas/**/*.png
+/projeto-2-mpi/resultados/**/*.bin
+/projeto-2-mpi/resultados/**/*.pgm
+/projeto-2-mpi/resultados/**/*.ppm
+/projeto-2-mpi/resultados/**/*.png
+
 
 # Python: ambiente virtual e cache dos programas auxiliares
 .venv/
@@ -31,11 +35,17 @@ __pycache__/
 *.snm
 *.vrb
 
-# Logs e intermediários do LaTeX, sem esconder logs experimentais
+# Logs e intermediários do LaTeX
 /projeto-*/relatorio/**/*.log
 /projeto-*/relatorio/**/*.out
 /projeto-*/apresentacao/**/*.log
 /projeto-*/apresentacao/**/*.out
+
+# Auxiliares e logs locais que não fazem parte da entrega
+/projeto-2-mpi/experimentos/analise.py
+/projeto-2-mpi/resultados/analise/fbc.csv
+/projeto-2-mpi/resultados/validacao/mpi_validation_ranks.csv
+/projeto-2-mpi/resultados/**/*.log
 
 # Arquivos temporários de editores e do sistema operacional
 *.swp
@@ -45,3 +55,9 @@ __pycache__/
 Thumbs.db
 
 .vscode/
+
+# Execucoes locais dos scripts da Etapa 2
+/projeto-2-mpi/execucoes/
+/projeto-2-mpi/experimentos/medicoes/
+/projeto-2-mpi/validacao/resultados/
+/projeto-2-mpi/mpi/mandelbrot_mpi
